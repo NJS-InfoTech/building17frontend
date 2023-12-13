@@ -1,0 +1,40 @@
+﻿body {
+    position: relative;
+    margin: 0;
+    padding: 0;
+}
+
+.overlay-icon {
+    position: fixed;
+    transform: translateY(-10px);
+    right: 1px;
+    z-index: 1000; /* Adjust z-index as needed to ensure it's above other elements */
+    padding: 10px;
+}
+
+    .overlay-icon i {
+        color: #333; /* Adjust icon color */
+        cursor: pointer;
+    }
+
+.expand-collapse-btn-size {
+    font-size: 26px
+}
+
+.overlay-icon-compress {
+    position: fixed !important;
+    top: 0 !important;
+    right: 16px !important;
+    z-index: 2; /* Adjust the z-index as needed to ensure it's above other elements */
+    padding: 5px;
+}
+
+    .overlay-icon-compress i {
+        font-size: 20px; /* Adjust icon size */
+        color: #333; /* Adjust icon color */
+        cursor: pointer;
+    }
+
+.pointer-link {
+    cursor: pointer;
+}

@@ -1,0 +1,827 @@
+﻿
+
+<!DOCTYPE html>
+
+<html class="vh-100">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Step Transaction</title>
+
+    <link rel="icon" type="image/svg+xml" sizes="150x150" href="assets/img/MOM_title_logo.svg">
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/fonts/fontawesome-all.min.css">
+    <link rel="stylesheet" href="assets/css/bootstrap-green.css">
+    <link rel="stylesheet" href="assets/assy_b17/css/simplebar.css" />
+    <link href="assets/plugins/data-tables/datatables.bootstrap4.min.css" rel="stylesheet" />
+    <link href="assets/plugins/data-tables/datatable.css" rel="stylesheet" />
+    <link href="assets/plugins/data-tables/jquery-datatable.css" rel="stylesheet" />
+    <link href="assets/plugins/data-tables/buttons.min.css" rel="stylesheet" />
+    <link href="assets/assy_b17/css/ajax-datatable-load.css" rel="stylesheet" />
+    <script src="assets/plugins/Toast/sweetalert.js"></script>
+
+    <style type="text/css">
+        /* Chrome, Safari, Edge, Opera */
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        /* Firefox */
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+
+        .text-center {
+            text-align: center !important;
+        }
+
+        div.dt-button-collection {
+            width: 80px !important;
+            padding: 4px 4px 4px 4px !important;
+        }
+
+        .breadcrumb {
+            padding: 1px 15px !important;
+        }
+
+        .lightgreen {
+            background-color: lightgreen !important;
+        }
+    </style>
+</head>
+
+<body id="page-top" class="vh-100">
+    <input type="hidden" runat="server" id="scheduler_data_id" />
+    <input type="hidden" runat="server" id="building17_data_id" />
+    <input type="hidden" runat="server" id="step_id" />
+    <input type="hidden" runat="server" id="url_step_id" />
+    <input type="hidden" runat="server" id="url_item_id" />
+    <input type="hidden" runat="server" id="in_progress" />
+    <input type="hidden" runat="server" id="job_started_by" />
+
+    <div id="wrapper">
+        <Navbar:pgnavbar id="PgNavbar" runat="server" />
+        <div class="d-flex flex-column vh-100" id="content-wrapper" style="flex-wrap: nowrap !important; overflow-y: hidden">
+            <Header:pgheader id="PgHeader" runat="server" />
+            <div id="breadcrumbs">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb" runat="server" style="background-color: none;">
+                        <li class="breadcrumb-item">
+                            <a id="mom_href" style="color: black; font-size: 1.1em; margin-top: 3.5px" runat="server" href="#" class="fas fa-home"></a>
+                        </li>
+                        <li class="breadcrumb-item" id="Level1">
+                            <a href="master_step_main.aspx?step_id=1&item=1" id="AlmTracker" runat="server" style="text-transform: capitalize; font-weight: bold;">Assembly B17</a>
+                        </li>
+                        <li class="breadcrumb-item" id="Level2">
+                            <a href="#" id="item" runat="server" style="text-transform: capitalize; font-weight: bold;"></a>
+                        </li>
+                        <li id="step" runat="server" class="breadcrumb-item active" style="text-transform: capitalize;"></li>
+                    </ol>
+                </nav>
+            </div>
+            <div class="flex-grow" data-simplebar="" style="min-height: 0">
+                <div class="container-fluid">
+                    <div class="row mb-5">
+                        <div class="col">
+                            <div class="card shadow">
+                                <div class="card-header py-1">
+                                    <div class="row">
+                                        <div class="col my-auto">
+                                            <p class="text-primary m-0 font-weight-bold" id="card_header" runat="server"></p>
+                                        </div>
+                                        <div class="col exprt_btn" style="text-align: right;"></div>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-lg-4 col-sm-6" id="scan_jo_no_div" runat="server">
+                                            <label><b>SCAN JO Number:</b></label>
+                                            <input id="StartJOByScanner" runat="server" type="number" onkeydown="return TrapEnterKey(event)" class="form-control" />
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="table-responsive text-center table mt-2" id="dataTable-1" role="grid" aria-describedby="dataTable_info" style="width: 100%">
+                                                <table class="table my-0 compact text-center" style="width: 100%;" id="data_table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>JO Number</th>
+                                                            <th>JO Sched Start Date</th>
+                                                            <th>JO Sched Completion Date</th>
+                                                            <th>Item</th>
+                                                            <th>Current Qty</th>
+                                                            <th>Total Qty</th>
+                                                            <th>Catalog</th>
+                                                            <th>Customer</th>
+                                                            <th>SO Sched Ship Date</th>
+                                                            <th>Notes</th>
+                                                            <th>Completed By</th>
+                                                            <th>Started By</th>
+                                                            <th>TAKT Time</th>
+                                                            <th></th>
+                                                            <th></th>
+                                                            <th></th>
+                                                            <th></th>
+                                                            <th></th>
+                                                            <th></th>
+                                                        </tr>
+                                                    </thead>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" role="dialog" tabindex="-1" id="partshort_notes_modal" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="reject_header">Part Shortage Notes</h4>
+                    <button type="button" class="close" onclick="ClosePartShortModal()" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="was-validated">
+                        <div class="row">
+                            <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                                <div class="form-group">
+                                    <label class="font-weight-bold" for="partshortage_notes">Notes</label>
+                                    <textarea type="text" runat="server" class="form-control" id="partshortage_notes" name="notes" required></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-light" type="button" onclick="ClosePartShortModal()">Close</button>
+                    <button class="btn btn-primary" type="button" onclick="SubmitPartShortage()">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" role="dialog" tabindex="-1" id="commentModal" data-backdrop="static">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Add Comment</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                </div>
+                <div class="modal-body was-validated">
+                    <div class="form-group">
+                        <label class="font-weight-bold">Comment</label>
+                        <textarea type="text" id="comment" class="form-control mb-2" placeholder="Enter Comment" required></textarea>
+                    </div>
+                    <input type="hidden" id="buildingIDHidden" />
+                    <input type="hidden" id="stepIDHidden" />
+                    <input type="hidden" id="IDHidden" />
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" type="button" onclick="AddComment()">Add Comment</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="edit_notes_modal" class="modal">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content" style="width: 1232px">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="modal_header">Edit Notes</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group">
+                                <textarea id="edit_notes" class="form-control" style="width: 100%; height: 100%;"></textarea>
+                                <input type="hidden" id="id_for_notes">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-light" type="button" data-dismiss="modal">Close</button>
+                    <button class="btn btn-primary" type="button" onclick="EditNotes()">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/js/chart.min.js"></script>
+    <script src="assets/js/bs-init.js"></script>
+    <script src="assets/assy_b17/js/left_side_bar.js"></script>
+    <script src="assets/assy_b17/js/jquery.easing.js"></script>
+    <script src="assets/assy_b17/js/simplebar.js"></script>
+    <script src="assets/plugins/data-tables/datatable.js"></script>
+    <script src="assets/plugins/data-tables/jquery.datatables.min.js"></script>
+    <script src="assets/plugins/data-tables/buttons.min.js"></script>
+    <script src="assets/plugins/data-tables/jszip.min.js"></script>
+    <script src="assets/plugins/data-tables/buttons.html5.min.js"></script>
+    <script src="assets/plugins/Toast/sweetalert.js"></script>
+    <script src="assets/assy_b17/js/modalpopup.js"></script>
+    <script src="assets/assy_b17/js/ajax-setup.js"></script>
+    <script src="assets/assy_b17/js/ajax-exception.js"></script>
+    <script src="assets/assy_b17/js/sweet-alert-msg-popup.js"></script>
+    <script src="assets/assy_b17/js/datatable-export-html.js"></script>
+    <script src="assets/assy_b17/js/left_sidebar_toggle.js"></script>
+
+    <style>
+        .GreenText {
+            color: green !important;
+            text-decoration: solid;
+        }
+    </style>
+
+    <script>
+
+        $(document).ready(function () {
+            PopulateSchedulerData();
+            GetStepName();
+        });
+        setInterval(function () {
+            PopulateSchedulerData();
+
+        }, 60000);
+        function Stop_Click(id, jo_number) {
+            var url_stepid = document.getElementById('url_step_id').value
+            Swal.fire({
+                title: 'Are you sure you want to stop the job: ' + jo_number + ' ?',
+                icon: 'warning',
+                showDenyButton: true,
+                confirmButtonText: `Yes`,
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        type: "POST",
+                        headers: {
+                            "Access-Control-Allow-Origin": "*",
+                            "Access-Control-Allow-Credentials": true
+                        },
+                        url: "master_step_main.aspx/StopClick",
+                        contentType: "application/json; charset=utf-8",
+                        data: JSON.stringify({ 'id': id }),
+                        dataType: "json",
+                        success: function (result) {
+                            if (result.d.includes('ExceptionMessage')) {
+                                SweetAlertMessagePopup(result.d, "error");
+                            }
+                            else {
+                                SweetAlertSuccess('Job stopped successfully!', 'success');
+                                document.getElementById('in_progress').value = '0';
+                                document.getElementById('job_started_by').value = "";
+                                PopulateSchedulerData();
+                            }
+                        },
+                        error: function (error, exception) {
+                            SweetAlertMessagePopup(ErrorMessage(error, exception), "error");
+                        }
+                    });
+                }
+            })
+        }
+
+        function GetStepName() {
+            var step_id = document.getElementById('url_step_id').value
+            $.ajax({
+                type: "POST",
+                headers: {
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Allow-Credentials": true
+                },
+                url: "master_step_main.aspx/GetStepName",
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify({ 'step_id': step_id }),
+                dataType: "json",
+                success: function (result) {
+                    if (result.d.includes('ExceptionMessage')) {
+                        SweetAlertMessagePopup(result.d, "error");
+                    }
+                    else {
+                        document.getElementById('step').innerHTML = result.d;
+                        document.getElementById('card_header').innerHTML = result.d;
+                    }
+                },
+                error: function (error, exception) {
+                    SweetAlertMessagePopup(ErrorMessage(error, exception), "error");
+                }
+            });
+        }
+
+        function PopulateSchedulerData() {
+            var url = "master_step_main.aspx/GetSchedulerData";
+            var url_stepid = document.getElementById('url_step_id').value
+            var url_item = document.getElementById('url_item_id').value
+                     var export_columns = "";
+            if(url_stepid == "4"){
+                                export_columns = [0, 1, 2, 3, 4, 5, 6, 7, 8];
+            }
+            else{
+                                export_columns = [0, 1, 2, 3, 4, 5, 6, 7, 8, 12];
+            }
+            $.ajax({
+                type: "POST",
+                headers: {
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Allow-Credentials": true
+                },
+                url: url,
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify({ 'url_stepid': url_stepid, 'url_item': url_item }),
+                beforeSend: function () {
+                    $("#data_table").addClass('table-loader').show();
+                },
+                complete: function () {
+                    $("table").removeClass('table-loader').show();
+                },
+                success: function (result) {
+                    if (result.d.includes('ExceptionMessage')) {
+                        SweetAlertMessagePopup(result.d, "error");
+                    }
+                    else {
+                        var jsonD = JSON.parse(result.d);
+                        if ($.fn.DataTable.isDataTable('#data_table')) {
+                            $('#data_table').DataTable().clear().rows.add(jsonD.data).draw();
+                        } else {
+                            var table = $('#data_table').DataTable({
+                                "dom": '<"row toolbar" <"col addButton text-right">>Bfrtip',
+                                data: JSON.parse(result.d).data,
+                                scrollX: true,
+                                "columns": [
+                                    { "data": "jo_num" },
+                                    { "data": "jo_sched_start_date", "type": "date" },
+                                    { "data": "jo_sched_comp_date", "type": "date" },
+                                    { "data": "item" },
+                                    { "data": "curr_qty" },
+                                    { "data": "tot_qty" },
+                                    { "data": "catalog" },
+                                    { "data": "customer" },
+                                    { "data": "so_sched_ship_date", "type": "date" },
+                                    { "data": "short_note", "className": "text-center" },
+                                    { "data": "completed_by" },
+                                    { "data": "started_by" },
+                                    { "data": "takt_time" },
+                                    { "data": "startcomp", "orderable": false, "searchable": false, "sorting": false },
+                                    { "data": "part_shortage", "orderable": false, "searchable": false, "sorting": false },
+                                    { "data": "add_in_mildew", "orderable": false, "searchable": false, "sorting": false },
+                                    { "data": "stop", "orderable": false, "searchable": false, "sorting": false },
+                                    { "data": "is_progress", "title": "", "orderable": false, "searchable": false, visible: false },
+                                    { "data": "comment", "title": "Comment", "orderable": false, "searchable": false }
+                                ],
+                                "rowCallback": function (row, data) {
+                                    var check_progress = data['is_progress'];
+                                    var data = "";
+                                    if (check_progress.includes('*')) {
+                                        data = check_progress.split('*');
+                                        check_progress = data[0];
+                                        if (data[1] != "other") {
+                                            document.getElementById('job_started_by').value = data[1];
+                                        }
+                                    }
+                                    if (check_progress == "yes") {
+                                        $(row).addClass('lightgreen');
+                                        document.getElementById('in_progress').value = '1';
+                                    } else {
+                                        $(row).removeClass('lightgreen');
+                                    }
+
+                                    if (document.getElementById('in_progress').value == '1') {
+                                        document.getElementById('StartJOByScanner').blur();
+                                    } else {
+                                        setTimeout(function () {
+                                            document.getElementById('StartJOByScanner').focus();
+                                        }, 500);
+                                    }
+                                },
+                                buttons: [
+                                    {
+                                        extend: 'collection',
+                                        text: '<i class="fas fa-download fa-sm text-white-50"></i> Export',
+                                        className: 'btn btn-primary btn-sm d-none d-sm-inline-block mx-1 exportOptions',
+                                        init: function (api, node, config) {
+                                            $(node).removeClass('dt-button');
+                                        },
+                                        buttons: [
+                                            $.extend(!0, {}, buttonCommon, {
+                                                extend: 'excel',
+                                                text: ' <i class="fas fa-download fa-sm text-white-50"></i> Excel',
+                                                className: 'btn btn-primary btn-sm w-100 mb-1',
+                                                init: function (api, node, config) {
+                                                    $(node).removeClass('dt-button')
+                                                },
+                                                filename: function () { return 'Step Transaction' },
+                                                exportOptions: {
+                                                    columns: export_columns
+                                                }
+                                            })
+                                        ]
+                                    }
+                                ],
+                                drawCallback: function (settings) {
+                                    var step_id = document.getElementById('url_step_id').value;
+                                    var item_id = document.getElementById('url_item_id').value;
+                                    var api = new $.fn.dataTable.Api(settings);
+
+                                    if (step_id == "4") {
+                                        api.columns([10, 13, 12]).visible(false);
+                                    }
+
+                                    if (step_id == "1") {
+                                        api.columns(9).visible(false);
+                                    }
+
+                                    if (item_id == '2') {
+                                        api.columns([9]).visible(false);
+                                    }
+
+                                    var hasRows = this.api().rows({ filter: 'applied' }).data().length > 0;
+
+                                    if (!hasRows) {
+                                        this.api().buttons('.exportOptions').disable();
+                                    }
+                                    else {
+                                        this.api().buttons('.exportOptions').enable();
+                                    }
+                                    var url_itemid = document.getElementById('url_item_id').value;
+                                    if ((step_id == 2 && url_itemid == 1) || (step_id == 3 && url_itemid == 1)) {
+                                        api.columns([17]).visible(true);
+                                        api.columns([10]).visible(true);
+                                    }
+                                    else {
+                                        api.columns([17]).visible(false);
+                                        api.columns([10]).visible(false);
+                                    }
+                                }
+                            });
+                        }
+                        $("#data_table_wrapper > .dt-buttons > .exportOptions").appendTo("div.exprt_btn");
+
+                    }
+                },
+                error: function (error, exception) {
+                    SweetAlertToastPopup(ErrorMessage(error, exception), "error");
+                }
+            });
+        }
+
+        function StartJob(scheduler_data_id, job_no, quantity) {
+            var in_progress = document.getElementById('in_progress').value;
+            var url_stepid = document.getElementById('url_step_id').value;
+            var started_by = document.getElementById('job_started_by').value;
+            if (in_progress == "1" && started_by == "progress" && url_stepid == "1") {
+                SweetAlertMessagePopup('Job is already in progress!', 'warning');
+            }
+            else if (in_progress == "1" && url_stepid != "1") {
+                SweetAlertMessagePopup('Job is already in progress!', 'warning');
+            }
+            else {
+                Swal.fire({
+                    title: 'Are you sure you want to start the job: ' + job_no + ' ?',
+                    icon: 'warning',
+                    showDenyButton: true,
+                    confirmButtonText: `Yes`,
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            type: "POST",
+                            headers: {
+                                "Access-Control-Allow-Origin": "*",
+                                "Access-Control-Allow-Credentials": true
+                            },
+                            url: "master_step_main.aspx/StartJobNo",
+                            contentType: "application/json; charset=utf-8",
+                            data: JSON.stringify({ 'scheduler_data_id': scheduler_data_id, 'url_stepid': url_stepid }),
+                            dataType: "json",
+                            success: function (result) {
+                                if (result.d.includes('ExceptionMessage')) {
+                                    SweetAlertMessagePopup(result.d, "error");
+                                }
+                                else {
+                                    SweetAlertSuccess('Job started successfully!', 'success');
+                                    document.getElementById('StartJOByScanner').value = "";
+                                    PopulateSchedulerData();
+                                    event.preventDefault();
+                                }
+                            },
+                            error: function (error, exception) {
+                                SweetAlertMessagePopup(ErrorMessage(error, exception), "error");
+                            }
+                        });
+                    }
+                })
+            }
+        }
+
+        function CompleteJob(building17_data_id, step_id, job_no) {
+            var url_stepid = document.getElementById('url_step_id').value;
+            Swal.fire({
+                title: 'Are you sure you want to complete the job: ' + job_no + ' ?',
+                icon: 'warning',
+                showDenyButton: true,
+                confirmButtonText: `Yes`,
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        type: "POST",
+                        headers: {
+                            "Access-Control-Allow-Origin": "*",
+                            "Access-Control-Allow-Credentials": true
+                        },
+                        url: "master_step_main.aspx/CompleteJobNo",
+                        contentType: "application/json; charset=utf-8",
+                        data: JSON.stringify({ 'building17_data_id': building17_data_id, 'step_id': step_id, 'url_stepid': url_stepid }),
+                        dataType: "json",
+                        success: function (result) {
+                            if (result.d.includes('ExceptionMessage')) {
+                                SweetAlertMessagePopup(result.d, "error");
+                            }
+                            else {
+                                SweetAlertSuccess('Job completed successfully!', 'success');
+                                document.getElementById('in_progress').value = '0';
+                                document.getElementById('StartJOByScanner').value = "";
+                                document.getElementById('job_started_by').value = "";
+                                PopulateSchedulerData();
+                                event.preventDefault();
+                            }
+                        },
+                        error: function (error, exception) {
+                            SweetAlertMessagePopup(ErrorMessage(error, exception), "error");
+                        }
+                    });
+                }
+            })
+        }
+
+        function PartshortageClick(scheduler_data_id, building17_data_id, step_id, job_no) {
+            document.getElementById('scheduler_data_id').value = scheduler_data_id;
+            document.getElementById('building17_data_id').value = building17_data_id;
+            document.getElementById('step_id').value = step_id;
+            Swal.fire({
+                title: 'Are you sure you want to send the job: ' + job_no + ' to part shortage?',
+                icon: 'warning',
+                showDenyButton: true,
+                confirmButtonText: `Yes`,
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $('#partshort_notes_modal').modal({ backdrop: 'static', keyboard: false });
+                    $('#partshort_notes_modal').modal('show');
+                }
+            })
+        }
+
+        function ClosePartShortModal() {
+            $('#partshort_notes_modal').modal('hide');
+            document.getElementById('scheduler_data_id').value = "";
+            document.getElementById('building17_data_id').value = "";
+            document.getElementById('step_id').value = "";
+            document.getElementById('partshortage_notes').value = "";
+        }
+
+        function SubmitPartShortage() {
+            var scheduler_data_id = document.getElementById('scheduler_data_id').value;
+            var building17_data_id = document.getElementById('building17_data_id').value;
+            var step_id = document.getElementById('step_id').value
+            var notes = document.getElementById('partshortage_notes').value;
+            var url_stepid = document.getElementById('url_step_id').value;
+            if (notes == "") {
+                SweetAlertMessagePopup('Please enter notes!', 'error')
+            }
+            else {
+                $.ajax({
+                    type: "POST",
+                    headers: {
+                        "Access-Control-Allow-Origin": "*",
+                        "Access-Control-Allow-Credentials": true
+                    },
+                    url: "master_step_main.aspx/PartShortage",
+                    contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify({ 'scheduler_data_id': scheduler_data_id, 'building17_data_id': building17_data_id, 'step_id': step_id, 'notes': notes, 'url_stepid': url_stepid }),
+                    dataType: "json",
+                    success: function (result) {
+                        if (result.d.includes('ExceptionMessage')) {
+                            SweetAlertMessagePopup(result.d, "error");
+                        }
+                        else {
+                            SweetAlertSuccess('Job has been sent to part shortage successfully!', 'success');
+                            document.getElementById('job_started_by').value = "";
+                            ClosePartShortModal();
+                            PopulateSchedulerData();
+                            event.preventDefault();
+                        }
+                    },
+                    error: function (error, exception) {
+                        SweetAlertMessagePopup(ErrorMessage(error, exception), "error");
+                    }
+                });
+            }
+        }
+
+        function TrapEnterKey(e) {
+            var scanner_jo_number = document.getElementById("StartJOByScanner").value;
+            var job_inprogress = document.getElementById('in_progress').value;
+            var stepid = document.getElementById('url_step_id').value;
+            var itemid = document.getElementById('url_item_id').value;
+            var started_by = document.getElementById('job_started_by').value;
+            var Ucode = e.keyCode ? e.keyCode : e.charCode
+            if (Ucode == 13 || Ucode == 9) {
+                if (scanner_jo_number != "") {
+
+                    $.ajax({
+                        type: "POST",
+                        headers: {
+                            "Access-Control-Allow-Origin": "*",
+                            "Access-Control-Allow-Credentials": true
+                        },
+                        url: "master_step_main.aspx/CheckValidJobNumber",
+                        contentType: "application/json; charset=utf-8",
+                        data: JSON.stringify({ 'scanner_jo_number': scanner_jo_number, 'stepid': stepid, 'item': itemid }),
+                        dataType: "json",
+                        success: function (result) {
+                            if (result.d.includes('ExceptionMessage')) {
+                                SweetAlertMessagePopup(result.d, "error");
+                            }
+                            else {
+                                if (result.d == "no") {
+                                    SweetAlertMessagePopup('In-valid job number!', 'error');
+                                }
+                                else {
+                                    if (stepid == "4") {
+                                        var str = result.d.split('*');
+                                        CompleteJob(str[1], stepid, scanner_jo_number);
+                                    }
+                                    else {
+                                        if (job_inprogress == "1" && started_by == "progress" && stepid == "1") {
+                                            SweetAlertMessagePopup('Job is already in progress!', 'warning');
+                                        }
+                                        else if (job_inprogress == "1" && stepid != "1") {
+                                            SweetAlertMessagePopup('Job is already in progress!', 'warning');
+                                        }
+                                        else {
+                                            StartJob(result.d, scanner_jo_number);
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        error: function (error, exception) {
+                            SweetAlertMessagePopup(ErrorMessage(error, exception), "error");
+                        }
+                    });
+                }
+            }
+        }
+
+        function CommentModal(buildingID, stepID, id) {
+            $("#buildingIDHidden").val(buildingID);
+            $("#stepIDHidden").val(stepID);
+            $("#IDHidden").val(id);
+            $("#commentModal").modal("show");
+            $.ajax({
+                type: "POST",
+                headers: {
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Allow-Credentials": true
+                },
+                url: "master_step_main.aspx/CommentModal",
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify({ 'buildingID': buildingID, 'stepID': stepID, 'id': id }),
+                dataType: "json",
+                success: function (result) {
+                    if (result.d.includes('ExceptionMessage')) {
+                        SweetAlertMessagePopup(result.d, "error");
+                    }
+                    else {
+                        $("#comment").val(result.d);
+                    }
+                },
+                error: function (error, exception) {
+                    SweetAlertMessagePopup(ErrorMessage(error, exception), "error");
+                }
+            });
+        }
+
+        function AddComment() {
+            var comment = $("#comment").val().trim();
+            var buildingID = $("#buildingIDHidden").val();
+            var stepID = $("#stepIDHidden").val();
+            var id = $("#IDHidden").val();
+            if (comment == "") {
+                SweetAlertMessagePopup("Please enter comment", "error");
+            }
+            else {
+                $.ajax({
+                    type: "POST",
+                    headers: {
+                        "Access-Control-Allow-Origin": "*",
+                        "Access-Control-Allow-Credentials": true
+                    },
+                    url: "master_step_main.aspx/AddComment",
+                    contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify({ 'comment': comment, 'buildingID': buildingID, 'stepID': stepID, 'id': id }),
+                    dataType: "json",
+                    success: function (result) {
+                        if (result.d.includes('ExceptionMessage')) {
+                            SweetAlertMessagePopup(result.d, "error");
+                        }
+                        else {
+                            SweetAlertMessagePopup('Comment added successfully', 'success');
+                            PopulateSchedulerData();
+                        }
+                        $("#commentModal").modal("hide");
+                    },
+                    error: function (error, exception) {
+                        SweetAlertMessagePopup(ErrorMessage(error, exception), "error");
+                    }
+                });
+            }
+        }
+
+        function NotesModal(id, notes, building_id, step_id) {
+            notes = notes.replaceAll("<br />", "\n")
+            $("#edit_notes").val(notes);
+            $("#id_for_notes").val(id);
+            $("#building17_data_id").val(building_id);
+            $("#step_id").val(step_id);
+        }
+
+        function EditNotes() {
+            $("#edit_notes_modal").modal('hide');
+            var notes = $("#edit_notes").val();
+            var id = $("#id_for_notes").val();
+            var building_id = $("#building17_data_id").val();
+            var step_id = $("#step_id").val();
+            $.ajax({
+                type: "POST",
+                headers: {
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Allow-Credentials": true
+                },
+                url: "master_step_main.aspx/EditNotes",
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify({ 'notes': notes, 'id': id, 'building_id': building_id, 'step_id': step_id }),
+                dataType: "json",
+                success: function (result) {
+                    if (result.d.includes('ExceptionMessage')) {
+                        SweetAlertMessagePopup(result.d, "error");
+                    }
+                    else {
+                        SweetAlertMessagePopup('Updated notes successfully', 'success');
+                        PopulateSchedulerData();
+                    }
+                },
+                error: function (error, exception) {
+                    SweetAlertMessagePopup(ErrorMessage(error, exception), "error");
+                }
+            });
+        }
+
+        var buttonCommon = {
+            exportOptions: {
+                format: {
+                    header: function (data, column, row) {
+                        return data.replace("<br/>", "\n");
+                    },
+                    body: function (data, row, column, node) {
+                        var newData = data.toString().replace("<br/>", "\n")
+                        if (isHTMLExport(newData)) {
+                            if ($(newData).find('input').length) {
+                                return $(newData).find('input').val()
+                            } else {
+                                return $(newData).html()
+                            }
+                        } else {
+                            return newData
+                        }
+                    }
+                }
+            }
+        };
+        function MildewPartRequest(url) {
+            var win = window.open(url, '_blank');
+            win.focus();
+        }
+    </script>
+</body>
+</html>

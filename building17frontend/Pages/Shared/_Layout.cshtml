@@ -1,0 +1,122 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Building_17</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/Building_17_VVP.styles.css" asp-append-version="true" />
+    
+    <link rel="icon" type="image/svg+xml" sizes="150x150" href="assets/img/MOM_title_logo.svg">
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/fonts/fontawesome-all.min.css">
+    <link rel="stylesheet" href="assets/css/bootstrap-green.css">
+    <link rel="stylesheet" href="assets/assy_b17/css/simplebar.css" />
+    <link href="assets/plugins/data-tables/datatables.bootstrap4.min.css" rel="stylesheet" />
+    <link href="assets/plugins/data-tables/datatable.css" rel="stylesheet" />
+    <link href="assets/plugins/data-tables/jquery-datatable.css" rel="stylesheet" />
+    <link href="assets/plugins/data-tables/buttons.min.css" rel="stylesheet" />
+    <link href="assets/assy_b17/css/ajax-datatable-load.css" rel="stylesheet" />
+    <!-- DataTables CSS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+    <script src="assets/plugins/Toast/sweetalert.js"></script>
+
+</head>
+<body>
+
+    <div id="wrapper">
+        <nav id="left_nav_bar" class="navbar navbar-dark align-items-start sidebar sidebar-dark accordion bg-primary p-0" style="background: rgb(0, 132, 85)!important;">
+            <div class="container">
+                <div class="flex-shrink-0">
+                    <a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" id="mom_redirect_url" href="">
+                        <div class="sidebar-brand-icon">
+                            <img src="~/img/MOM_logo.ico" style="height: 40px; width: 40px">
+                        </div>
+                        <div class="sidebar-brand-text mx-3">
+                            <span>M.O.M.</span>
+                        </div>
+                    </a>
+                    <hr class="sidebar-divider my-0">
+                </div>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-page="/units_complete_report">units_complete_report</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+
+        <div class="d-flex flex-column vh-100" id="content-wrapper" style="flex-wrap: nowrap !important; overflow-y: hidden">
+            @* <Header:PgHeader ID="PgHeader" /> *@
+            <header>
+                <div class="flex-shrink-0 center" style="font-weight:300;" id="header_data">
+                    <nav id="PgHeader_local_nav" class="navbar navbar-light navbar-expand bg-white topbar static-top display-4 text-danger" style="height: 50px; margin-right: 20px; font-weight:300;">
+                        LOCALHOST
+                    </nav>
+                </div>
+            </header>
+            <div id="breadcrumbs">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb" style="background-color: none;">
+                        <li class="breadcrumb-item">
+                            <a id="mom_href" style="color: black; font-size: 1.1em margin-top: 3.5px" class="fas fa-home"></a>
+                        </li>
+                        <li class="breadcrumb-item" id="Level1">
+                            <a href="master_step_main.aspx?step_id=1&amp;item=1" id="AlmTracker" style="text-transform: capitalize; font-weight: bold; color: #007647;">Assembly B17</a>
+                        </li>
+                        <li class="breadcrumb-item" id="Level2">
+                            <a href="master_step_main.aspx?step_id=1&amp;item=1" id="item" style="text-transform: capitalize; font-weight: bold; color: #007647;">Vista</a>
+                        </li>
+                        <li id="step" class="breadcrumb-item active" style="text-transform: capitalize;">Pre-Inspection</li>
+                    </ol>
+                </nav>
+            </div>
+            <div class="container">
+                <main role="main" class="pb-3">
+                    @RenderBody()
+                </main>
+            </div>
+        </div>
+    </div>
+    <!-- DataTables JS -->
+    <script type="text/javascript" src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/js/chart.min.js"></script>
+    <script src="assets/js/bs-init.js"></script>
+    <script src="assets/assy_b17/js/left_side_bar.js"></script>
+    <script src="assets/assy_b17/js/jquery.easing.js"></script>
+    <script src="assets/assy_b17/js/simplebar.js"></script>
+    <script src="assets/plugins/data-tables/datatable.js"></script>
+    <script src="assets/plugins/data-tables/jquery.datatables.min.js"></script>
+    <script src="assets/plugins/data-tables/buttons.min.js"></script>
+    <script src="assets/plugins/data-tables/jszip.min.js"></script>
+    <script src="assets/plugins/data-tables/buttons.html5.min.js"></script>
+    <script src="assets/plugins/Toast/sweetalert.js"></script>
+    <script src="assets/assy_b17/js/modalpopup.js"></script>
+    <script src="assets/assy_b17/js/ajax-setup.js"></script>
+    <script src="assets/assy_b17/js/ajax-exception.js"></script>
+    <script src="assets/assy_b17/js/sweet-alert-msg-popup.js"></script>
+    <script src="assets/assy_b17/js/datatable-export-html.js"></script>
+    <script src="assets/assy_b17/js/left_sidebar_toggle.js"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
